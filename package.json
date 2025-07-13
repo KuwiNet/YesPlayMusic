@@ -23,7 +23,7 @@
   },
   "main": "background.js",
   "engines": {
-    "node": "18.x"
+    "node": "14 || 16 || 17 || 18"
   },
   "resolutions": {
     "@achrinza/node-ipc": "10.1.9"
