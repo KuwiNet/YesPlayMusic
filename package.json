@@ -23,8 +23,11 @@
   },
   "main": "background.js",
   "engines": {
-    "node": "18.x"
-  },
+  "node": "18.x"
+},
+"resolutions": {
+  "@achrinza/node-ipc": "10.1.9"
+}
   "dependencies": {
     "@unblockneteasemusic/rust-napi": "^0.4.0",
     "NeteaseCloudMusicApi": "^4.23.3",
@@ -98,8 +101,8 @@
     "vue-template-compiler": "^2.6.11"
   },
   "resolutions": {
-    "icon-gen": "3.0.0",
-    "degenerator": "2.2.0",
+    "icon-gen": "^2.0.0",
+    "degenerator": "^5.0.0",
     "electron-builder": "^23.0.0"
   },
   "eslintConfig": {
