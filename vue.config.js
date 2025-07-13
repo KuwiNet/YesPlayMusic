@@ -1,27 +1,25 @@
-// vue.config.js
 const webpack = require('webpack');
 const path = require('path');
-
 function resolve(dir) {
   return path.join(__dirname, dir);
 }
 
 module.exports = {
+  // 生产环境打包不输出 map
   productionSourceMap: false,
-
   devServer: {
-    // Webpack 5 已移除 disableHostCheck
-    allowedHosts: 'all',
+    disableHostCheck: true,
     port: process.env.DEV_SERVER_PORT || 8080,
     proxy: {
       '^/api': {
         target: 'http://localhost:3000',
         changeOrigin: true,
-        pathRewrite: { '^/api': '/' },
+        pathRewrite: {
+          '^/api': '/',
+        },
       },
     },
   },
-
   pwa: {
     name: 'YesPlayMusic',
     iconPaths: {
@@ -31,8 +29,10 @@ module.exports = {
     manifestOptions: {
       background_color: '#335eea',
     },
+    // workboxOptions: {
+    //   swSrc: "dev/sw.js",
+    // },
   },
-
   pages: {
     index: {
       entry: 'src/main.js',
@@ -42,9 +42,7 @@ module.exports = {
       chunks: ['main', 'chunk-vendors', 'chunk-common', 'index'],
     },
   },
-
   chainWebpack(config) {
-    // svg-sprite-loader
     config.module.rules.delete('svg');
     config.module.rule('svg').exclude.add(resolve('src/assets/icons')).end();
     config.module
@@ -54,10 +52,10 @@ module.exports = {
       .end()
       .use('svg-sprite-loader')
       .loader('svg-sprite-loader')
-      .options({ symbolId: 'icon-[name]' })
+      .options({
+        symbolId: 'icon-[name]',
+      })
       .end();
-
-    // 原生 .node 文件
     config.module
       .rule('napi')
       .test(/\.node$/)
@@ -65,7 +63,6 @@ module.exports = {
       .loader('node-loader')
       .end();
 
-    // Node 模块 ES5 转译
     config.module
       .rule('webpack4_es_fallback')
       .test(/\.js$/)
@@ -73,22 +70,27 @@ module.exports = {
       .end()
       .use('esbuild-loader')
       .loader('esbuild-loader')
-      .options({ target: 'es2015', format: 'cjs' })
+      .options({ target: 'es2015', format: "cjs" })
       .end();
 
-    // ✅ 修复：Webpack 5 的 LimitChunkCountPlugin 不再支持 minChunkSize
+    // LimitChunkCountPlugin 可以通过合并块来对块进行后期处理。用以解决 chunk 包太多的问题
     config.plugin('chunkPlugin').use(webpack.optimize.LimitChunkCountPlugin, [
-      { maxChunks: 3 /* 仅保留 maxChunks */ },
+      {
+        maxChunks: 3,
+        minChunkSize: 10_000,
+      },
     ]);
   },
-
+  // 添加插件的配置
   pluginOptions: {
+    // electron-builder的配置文件
     electronBuilder: {
       nodeIntegration: true,
       externals: ['@unblockneteasemusic/rust-napi'],
       builderOptions: {
         productName: 'YesPlayMusic',
         copyright: 'Copyright © YesPlayMusic',
+        // compression: "maximum", // 机器好的可以打开，配置压缩，开启后会让 .AppImage 格式的客户端启动缓慢
         asar: true,
         publish: [
           {
@@ -99,10 +101,15 @@ module.exports = {
             releaseType: 'draft',
           },
         ],
-        directories: { output: 'dist_electron' },
+        directories: {
+          output: 'dist_electron',
+        },
         mac: {
           target: [
-            { target: 'dmg', arch: ['x64', 'arm64', 'universal'] },
+            {
+              target: 'dmg',
+              arch: ['x64', 'arm64', 'universal'],
+            },
           ],
           artifactName: '${productName}-${os}-${version}-${arch}.${ext}',
           category: 'public.app-category.music',
@@ -110,8 +117,14 @@ module.exports = {
         },
         win: {
           target: [
-            { target: 'portable', arch: ['x64'] },
-            { target: 'nsis', arch: ['x64'] },
+            {
+              target: 'portable',
+              arch: ['x64'],
+            },
+            {
+              target: 'nsis',
+              arch: ['x64'],
+            },
           ],
           publisherName: 'YesPlayMusic',
           icon: 'build/icons/icon.ico',
@@ -119,32 +132,54 @@ module.exports = {
         },
         linux: {
           target: [
-            { target: 'AppImage', arch: ['x64'] },
-            { target: 'tar.gz', arch: ['x64', 'arm64'] },
-            { target: 'deb', arch: ['x64', 'armv7l', 'arm64'] },
-            { target: 'rpm', arch: ['x64'] },
-            { target: 'snap', arch: ['x64'] },
-            { target: 'pacman', arch: ['x64'] },
+            {
+              target: 'AppImage',
+              arch: ['x64'],
+            },
+            {
+              target: 'tar.gz',
+              arch: ['x64', 'arm64'],
+            },
+            {
+              target: 'deb',
+              arch: ['x64', 'armv7l', 'arm64'],
+            },
+            {
+              target: 'rpm',
+              arch: ['x64'],
+            },
+            {
+              target: 'snap',
+              arch: ['x64'],
+            },
+            {
+              target: 'pacman',
+              arch: ['x64'],
+            },
           ],
           category: 'Music',
           icon: './build/icon.icns',
         },
-        dmg: { icon: 'build/icons/icon.icns' },
+        dmg: {
+          icon: 'build/icons/icon.icns',
+        },
         nsis: {
           oneClick: true,
           perMachine: true,
           deleteAppDataOnUninstall: true,
         },
       },
-      chainWebpackMainProcess: (config) => {
-        config.plugin('define').tap((args) => {
-          args[0].IS_ELECTRON = true;
+      // 主线程的配置文件
+      chainWebpackMainProcess: config => {
+        config.plugin('define').tap(args => {
+          args[0]['IS_ELECTRON'] = true;
           return args;
         });
         config.resolve.alias.set(
           'jsbi',
           path.join(__dirname, 'node_modules/jsbi/dist/jsbi-cjs.js')
         );
+
         config.module
           .rule('webpack4_es_fallback')
           .test(/\.js$/)
@@ -152,15 +187,22 @@ module.exports = {
           .end()
           .use('esbuild-loader')
           .loader('esbuild-loader')
-          .options({ target: 'es2015', format: 'cjs' })
+          .options({ target: 'es2015', format: "cjs" })
           .end();
       },
-      chainWebpackRendererProcess: (config) => {
-        config.plugin('define').tap((args) => {
-          args[0].IS_ELECTRON = true;
+      // 渲染线程的配置文件
+      chainWebpackRendererProcess: config => {
+        // 渲染线程的一些其他配置
+        // Chain webpack config for electron renderer process only
+        // The following example will set IS_ELECTRON to true in your app
+        config.plugin('define').tap(args => {
+          args[0]['IS_ELECTRON'] = true;
           return args;
         });
       },
+      // 主入口文件
+      // mainProcessFile: 'src/main.js',
+      // mainProcessArgs: []
     },
   },
 };
