@@ -23,11 +23,11 @@
   },
   "main": "background.js",
   "engines": {
-  "node": "18.x"
-},
-"resolutions": {
-  "@achrinza/node-ipc": "10.1.9"
-}
+    "node": "18.x"
+  },
+  "resolutions": {
+    "@achrinza/node-ipc": "10.1.9"
+  }
   "dependencies": {
     "@unblockneteasemusic/rust-napi": "^0.4.0",
     "NeteaseCloudMusicApi": "^4.23.3",
