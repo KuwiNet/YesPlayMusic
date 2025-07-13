@@ -4,7 +4,6 @@
   "private": true,
   "description": "A third party music player for Netease Music",
   "author": "qier222<qier222@outlook.com>",
-  "main": "background.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -22,8 +21,9 @@
     "prettier": "npx prettier --write ./src",
     "netease_api:run": "npx NeteaseCloudMusicApi"
   },
+  "main": "background.js",
   "engines": {
-    "node": "18.x"
+    "node": "14 || 16"
   },
   "dependencies": {
     "@unblockneteasemusic/rust-napi": "^0.4.0",
@@ -32,77 +32,75 @@
     "change-case": "^4.1.2",
     "cli-color": "^2.0.0",
     "color": "^4.2.3",
-    "core-js": "^3.37.0",
-    "crypto-js": "^4.2.0",
-    "dayjs": "^1.11.10",
-    "dexie": "^3.2.4",
+    "core-js": "^3.6.5",
+    "crypto-js": "^4.0.0",
+    "dayjs": "^1.8.36",
+    "dexie": "^3.0.3",
     "discord-rich-presence": "^0.0.8",
-    "electron": "^22.3.27",
-    "electron-builder": "^24.6.4",
-    "electron-context-menu": "^3.6.1",
-    "electron-debug": "^3.2.0",
-    "electron-devtools-installer": "^3.2.0",
+    "electron": "^13.6.7",
+    "electron-builder": "^23.0.0",
+    "electron-context-menu": "^3.1.2",
+    "electron-debug": "^3.1.0",
+    "electron-devtools-installer": "^3.2",
     "electron-icon-builder": "^2.0.1",
     "electron-is-dev": "^2.0.0",
-    "electron-log": "^4.4.8",
-    "electron-store": "^8.1.0",
-    "electron-updater": "^5.3.0",
+    "electron-log": "^4.3.0",
+    "electron-store": "^8.0.1",
+    "electron-updater": "^5.0.1",
     "esbuild": "^0.20.1",
     "esbuild-loader": "^4.0.3",
-    "express": "^4.19.2",
-    "express-fileupload": "^1.5.0",
-    "express-http-proxy": "^1.6.3",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.0",
+    "express-http-proxy": "^1.6.2",
     "extract-zip": "^2.0.1",
-    "howler": "^2.2.4",
-    "js-cookie": "^3.0.5",
-    "jsbi": "^4.3.0",
-    "lodash": "^4.17.21",
+    "howler": "^2.2.3",
+    "js-cookie": "^2.2.1",
+    "jsbi": "^4.1.0",
+    "lodash": "^4.17.20",
     "md5": "^2.3.0",
     "mpris-service": "^2.1.2",
-    "music-metadata": "^7.14.0",
+    "music-metadata": "^7.5.3",
     "node-vibrant": "^3.2.1-alpha.1",
     "nprogress": "^0.2.0",
-    "pac-proxy-agent": "^7.0.1",
-    "plyr": "^3.7.8",
-    "qrcode": "^1.5.3",
-    "register-service-worker": "^1.7.2",
+    "pac-proxy-agent": "^4.1.0",
+    "plyr": "^3.6.2",
+    "qrcode": "^1.4.4",
+    "register-service-worker": "^1.7.1",
     "svg-sprite-loader": "^6.0.11",
     "tunnel": "^0.0.6",
     "vscode-codicons": "^0.0.17",
-    "vue": "^2.7.16",
-    "vue-clipboard2": "^0.3.3",
-    "vue-gtag": "^1.16.1",
-    "vue-i18n": "^8.28.2",
-    "vue-router": "^3.6.5",
-    "vue-slider-component": "^3.2.24",
-    "vuex": "^3.6.2",
+    "vue": "^2.6.11",
+    "vue-clipboard2": "^0.3.1",
+    "vue-gtag": "1",
+    "vue-i18n": "^8.22.0",
+    "vue-router": "^3.4.3",
+    "vue-slider-component": "^3.2.5",
+    "vuex": "^3.4.0",
     "x11": "^2.3.0"
   },
   "devDependencies": {
-    "@types/node": "^18.19.31",
-    "@vue/cli-plugin-babel": "~5.0.8",
-    "@vue/cli-plugin-eslint": "~5.0.8",
-    "@vue/cli-plugin-pwa": "~5.0.8",
-    "@vue/cli-plugin-vuex": "~5.0.8",
-    "@vue/cli-service": "~5.0.8",
-    "@vue/eslint-config-prettier": "^8.0.0",
+    "@types/node": "^17.0.0",
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-pwa": "~4.5.0",
+    "@vue/cli-plugin-vuex": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^8.10.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-vue": "^9.25.0",
-    "husky": "^8.0.3",
-    "prettier": "^3.2.5",
-    "sass": "^1.75.0",
-    "sass-loader": "^13.3.3",
+    "eslint": "^6.7.2",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-vue": "^7.9.0",
+    "husky": "^4.3.0",
+    "prettier": "2.5.1",
+    "sass": "^1.26.11",
+    "sass-loader": "^10.0.2",
     "vue-cli-plugin-electron-builder": "~2.1.1",
-    "vue-template-compiler": "^2.7.16"
+    "vue-template-compiler": "^2.6.11"
   },
   "resolutions": {
-    "@achrinza/node-ipc": "^10.1.9",
-    "icon-gen": "^3.0.0",
-    "degenerator": "^5.0.0",
-    "electron-builder": "^24.6.4"
+    "icon-gen": "3.0.0",
+    "degenerator": "2.2.0",
+    "electron-builder": "^23.0.0"
   },
   "eslintConfig": {
     "root": true,
@@ -117,7 +115,7 @@
       "eslint:recommended"
     ],
     "parserOptions": {
-      "parser": "@babel/eslint-parser"
+      "parser": "babel-eslint"
     },
     "globals": {
       "ipcRenderer": "off"
@@ -131,7 +129,7 @@
   ],
   "husky": {
     "hooks": {
-      "pre-commit": "npx prettier --write ./src"
+      "pre-commit": "npm run prettier"
     }
   }
 }
